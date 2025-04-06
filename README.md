@@ -1,4 +1,4 @@
-# Linear Regression Analysis University Assignment
+# Linear Regression Analysis
 
 This repository contains a university assignment project that demonstrates linear regression analysis using synthetic data. The project is built with Node.js and Express on the server side, leverages [stdlib](https://github.com/stdlib-js/stdlib) for generating random data and performing statistical computations (e.g., computing means and dot products), and uses Chart.js on the client side to visualize the measured data along with the estimated regression line.
 
