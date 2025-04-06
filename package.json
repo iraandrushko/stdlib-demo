@@ -1,6 +1,10 @@
 {
     "private": true,
     "dependencies": {
-        "@stdlib/stdlib": "^0.3.2"
-    }
+    "@stdlib/stdlib": "^0.3.2",
+    "express": "^4.18.2"
+    },
+    "scripts": {
+    "start": "node demo.js"
+  }
 }

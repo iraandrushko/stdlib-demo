@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Linear Regression</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #f7f7f7;
+                text-align: center;
+            }
+            .chart-container {
+                margin: 20px auto;
+                width: 600px;
+                height: 300px;
+                border: 1px solid #ccc;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                padding: 10px;
+            }
+            canvas {
+                width: 100% !important;
+                height: 100% !important;
+            }
+            #results {
+                margin-top: 10px;
+                font-size: 16px;
+            }
+        </style>
+    </head>
+<body>
+    <h1>Linear Regression</h1>
+    <div class="chart-container">
+        <canvas id="chartCanvas"></canvas>
+    </div>
+    <div id="results"></div>
+    <script>
+        async function fetchModelData() {
+            const response = await fetch('/model-data');
+            return response.json();
+        }
+        async function renderChart() {
+            const modelData = await fetchModelData();
+            const dataPoints = modelData.dataPoints;
+            const linePoints = modelData.linePoints;
+            const regression = modelData.regression;
+            
+            const scatterData = dataPoints.map(pt => ({ x: pt.x, y: pt.y }));
+            const lineData = linePoints;
+            
+            const ctx = document.getElementById('chartCanvas').getContext('2d');
+            new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Measured Data',
+                            data: scatterData,
+                            backgroundColor: 'green'
+                        },
+                        {
+                            label: 'Linear Regression',
+                            data: lineData,
+                            type: 'line',
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            fill: false,
+                            showLine: true,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'X' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Y' }
+                        }
+                    }
+                }
+            });
+            
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <p>Estimated slope (a): ${regression.a.toFixed(3)}</p>
+                <p>Estimated intercept (b): ${regression.b.toFixed(3)}</p>
+            `;
+        }
+        renderChart();
+    </script>
+</body>
+</html>
